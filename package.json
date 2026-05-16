@@ -1,13 +1,13 @@
 {
-  "name": "free-web-proxy",
+  "name": "youtube-unblocker-proxy",
   "version": "1.0.0",
-  "description": "A basic web proxy server",
-  "main": "server.js",
+  "description": "Ultraviolet proxy designed to bypass blocks on heavy video platforms.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "express": "^4.19.2",
-    "http-proxy": "^1.18.1"
-  },
-  "scripts": {
-    "start": "node server.js"
+    "wisp-server-node": "^1.1.0"
   }
 }
