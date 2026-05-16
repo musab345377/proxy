@@ -3,18 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web Proxy</title>
+    <title>Unblocked Stream Hub</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        input { width: 60%; padding: 10px; font-size: 16px; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: #fff; text-align: center; padding-top: 100px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        h1 { color: #ff0000; font-size: 3rem; margin-bottom: 10px; }
+        p { color: #aaa; margin-bottom: 30px; }
+        input { width: 70%; padding: 15px; border: none; border-radius: 25px 0 0 25px; outline: none; font-size: 16px; }
+        button { width: 20%; padding: 15px; border: none; background: #ff0000; color: white; font-weight: bold; border-radius: 0 25px 25px 0; cursor: pointer; font-size: 16px; }
+        button:hover { background: #cc0000; }
     </style>
+    <!-- Inject Ultraviolet Interceptor Scripts -->
+    <script src="/uv/uv.bundle.js" defer></script>
+    <script src="/uv/uv.config.js" defer></script>
 </head>
 <body>
-    <h1>Free Web Proxy</h1>
-    <form action="/proxy" method="GET">
-        <input type="text" name="url" placeholder="Enter full URL (e.g., https://google.com)" required>
-        <button type="submit">Go</button>
-    </form>
+    <div class="container">
+        <h1>StreamHub</h1>
+        <p>Bypass local restrictions to watch YouTube and browse Google seamlessly.</p>
+        <form id="proxy-form">
+            <input id="proxy-search" type="text" placeholder="Search Google or enter a YouTube URL..." required>
+            <button type="submit">Launch</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('proxy-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Register Ultraviolet's service worker dynamically
+            if ('serviceWorker' in navigator) {
+                await navigator.serviceWorker.register('/uv/sw.js', {
+                    scope: __uv$config.prefix
+                });
+            }
+
+            let inputVal = document.getElementById('proxy-search').value.trim();
+            
+            // Automatically turn search terms into a Google search if not a strict URL
+            if (!inputVal.startsWith('http://') && !inputVal.startsWith('https://')) {
+                if (inputVal.includes('.') && !inputVal.includes(' ')) {
+                    inputVal = 'https://' + inputVal;
+                } else {
+                    inputVal = 'https://google.com' + encodeURIComponent(inputVal);
+                }
+            }
+
+            // Redirect the user inside the Ultraviolet unblocked sandbox route
+            window.location.href = __uv$config.prefix + __uv$config.encodeUrl(inputVal);
+        });
+    </script>
 </body>
 </html>
